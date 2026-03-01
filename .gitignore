@@ -1,0 +1,21 @@
+# Claude Code runtime state — never version
+.claude.json
+.credentials.json
+backups/
+cache/
+debug/
+file-history/
+history.jsonl
+mcp-needs-auth-cache.json
+paste-cache/
+plans/
+plugins/
+projects/
+session-env/
+settings.json
+shell-snapshots/
+todoStorage.json
+todos/
+
+# OS
+.DS_Store
