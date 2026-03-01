@@ -56,6 +56,7 @@ One-line description.
 | `go-validation.md` | `validation.All/Any/Name` from `github.com/bborbe/validation` |
 | `go-composition.md` | Compose small services via DI, never call package functions directly |
 | `go-security-linting.md` | gosec rules: file perms, `#nosec` annotations, fix on first attempt |
+| `go-precommit.md` | Linter limits (funlen 80, nestif 4, golines 100), banned packages, errcheck, license |
 
 ## When to Add a New Doc
 
