@@ -11,7 +11,9 @@ You are running in an isolated Docker container with `--dangerously-skip-permiss
 
 **Verification:**
 - Use `make test` iteratively after each change (fast feedback loop, NOT `go build ./...`)
-- Run `make precommit` ONCE at the very end as final validation before writing summary (it's slow: runs trivy + full linter suite)
+- Run `make precommit` ONCE at the very end as final validation (it's slow: runs trivy + full linter suite)
+- **If `make precommit` fails:** fix the issue, then re-run ONLY the failing target (e.g., `make lint`, `make gosec`, `make errcheck`). Do NOT re-run full `make precommit` until all individual targets pass.
+- Only re-run `make precommit` once all individual fixes are verified
 - Tests must pass before declaring complete
 - **Test coverage must be ≥80%** for every changed package. Check with `go test -cover ./pkg/...`
 - Test ALL edge cases: empty input, missing frontmatter, special characters, error paths
@@ -35,11 +37,12 @@ You are running in an isolated Docker container with `--dangerously-skip-permiss
 ## Workflow
 
 1. **Understand the prompt** - Read the task specification carefully
-2. **Check conventions** - Read project CLAUDE.md and relevant coding guidelines
+2. **Check conventions** - Read project CLAUDE.md AND all relevant `/home/node/.claude/docs/go-*.md` docs
 3. **Implement** - Follow all success criteria from the prompt
 4. **Verify iteratively** - Run `make test` after each meaningful change (fast, repeat as needed)
-5. **Self-review** - Before final validation, check your changes against the self-review checklist below
-6. **Final validate** - Run `make precommit` ONCE only when everything is done (slow — trivy + full linter)
+5. **Self-review** - Check your diff (`git diff`) against the self-review checklist below
+6. **Final validate** - Run `make precommit` ONCE when everything is done
+7. **Fix loop** - If `make precommit` fails: fix → run ONLY the failing target (`make lint`, `make gosec`, etc.) → repeat until that target passes → try next failing target → when all pass, run `make precommit` one final time
 
 ## Self-Review Checklist (Go projects)
 
