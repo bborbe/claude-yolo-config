@@ -98,6 +98,7 @@ Project-specific conventions AI wouldn't know. Read ALL relevant docs before imp
 | `go-functional-composition.md` | `XxxFunc` + `XxxList` for composable interfaces |
 | `go-validation.md` | `validation.All/Any/Name` from `github.com/bborbe/validation` |
 | `go-composition.md` | Compose small services via DI, never call package functions directly |
+| `go-security-linting.md` | gosec rules: file perms `0600`/`0750`, `#nosec` with reasons, fix on first attempt |
 
 **All projects:**
 | Doc | What you learn |

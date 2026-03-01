@@ -55,6 +55,7 @@ One-line description.
 | `go-functional-composition.md` | `XxxFunc` + `XxxList` pattern for composable interfaces |
 | `go-validation.md` | `validation.All/Any/Name` from `github.com/bborbe/validation` |
 | `go-composition.md` | Compose small services via DI, never call package functions directly |
+| `go-security-linting.md` | gosec rules: file perms, `#nosec` annotations, fix on first attempt |
 
 ## When to Add a New Doc
 
