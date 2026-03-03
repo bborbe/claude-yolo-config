@@ -55,6 +55,23 @@ func (s *myService) Process(ctx context.Context, ...) error { ... }
 val := libcollection.Ptr("hello")  // not func strPtr(s string) *string
 ```
 
+**Switch over if-chain** — use `switch` when dispatching on a type/enum value:
+```go
+// ✅ explicit cases, catches unknown values
+switch w.mode {
+case config.WorkflowDirect:
+    return w.handleDirect(ctx)
+case config.WorkflowPR:
+    return w.handlePR(ctx)
+default:
+    return fmt.Errorf("unknown workflow: %s", w.mode)
+}
+
+// ❌ silent fallthrough, easy to miss a case
+if w.mode == config.WorkflowPR { ... }
+return w.handleDirect(ctx)
+```
+
 ## File Structure
 
 ```

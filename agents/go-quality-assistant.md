@@ -33,6 +33,7 @@ Read these YOLO docs for project conventions:
 - Business logic in factory functions
 - Interface with too many methods (should be 1-2)
 - Dependencies not injected via constructor
+- If-chain on type/enum value instead of switch (missing default = silent bugs)
 
 ### Moderate (NICE TO HAVE)
 - Naming: package names lowercase single word, receiver 1-2 letters

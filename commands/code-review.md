@@ -26,6 +26,7 @@ Read these docs before reviewing:
 - `/home/node/.claude/docs/go-factory-pattern.md`
 - `/home/node/.claude/docs/go-composition.md`
 - `/home/node/.claude/docs/go-testing.md`
+- `/home/node/.claude/docs/git-workflow.md` (CHANGELOG section)
 
 ### Step 3: Run make precommit
 
@@ -45,6 +46,19 @@ Run ALL in parallel:
 2. `go-factory-pattern-assistant` — zero-logic factories, Create* prefix
 3. `go-test-coverage-assistant` — test gaps, mock infrastructure
 
+### Step 4b: CHANGELOG Review
+
+If CHANGELOG.md was modified (check `git diff --name-only`), validate `## Unreleased` entries:
+
+- Each entry starts with approved verb (capital): `Add` · `Fix` · `Update` · `Remove` · `Refactor` · `Improve`
+- Entries are specific (name exact type, function, or package)
+- Dependency updates include version numbers (`from vX to vY`)
+- No vague entries (`fix bug`, `refactor`, `update deps`, `add tests`)
+- No prompt filenames as entries
+- Flat list under `## Unreleased` (no `### Added` subsections)
+
+Flag violations as **Important (SHOULD FIX)**.
+
 ### Step 5: Consolidated Report
 
 ```markdown
@@ -62,6 +76,9 @@ PASS | FAIL (details)
 - Constructor returns concrete type
 - Missing counterfeiter annotations
 - Missing tests for critical components
+
+### CHANGELOG
+PASS | FAIL (list violations)
 
 ### Nice to Have
 - GoDoc improvements
