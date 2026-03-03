@@ -19,6 +19,19 @@ If `/workspace` contains `prompts/` directory (dark-factory project):
 - Just implement the changes, verify with `make test` and `make precommit`, then exit
 - Dark-factory will: stage all changes, move prompt to `completed/`, commit, tag, and push
 
+**CHANGELOG in dark-factory mode:**
+- If CHANGELOG.md exists, **YOU must add entries under `## Unreleased`**
+- Write meaningful descriptions of what changed (not prompt filenames)
+- Dark-factory will rename `## Unreleased` → `## vX.Y.Z` at release time
+- If `## Unreleased` section doesn't exist yet, create it at the top (before first `## v`)
+- Example:
+  ```markdown
+  ## Unreleased
+
+  - Add TextMarshaler/TextUnmarshaler to DateTime, UnixTime, Duration, TimeOfDay
+  - Add comprehensive JSON and YAML struct regression tests
+  ```
+
 ## Mono-Repo Warning
 
 If the project is a **mono-repo** (multiple services under one root):
@@ -89,11 +102,28 @@ Feature branches always use `## Unreleased` — never add version numbers:
 
 ```markdown
 ## Unreleased
+
 - Add configurable folder paths per vault config
 - Fix daily note path resolution
 ```
 
 Version numbers are assigned by the maintainer when merging to master.
+
+**Entry style:** `- <Verb> <what> [context]`
+
+Approved verbs (capital, imperative): `Add` · `Fix` · `Update` · `Remove` · `Refactor` · `Improve`
+
+Be specific — name the exact type, function, or package:
+- ✅ `- Fix NormalizeFilenames to include completed/ numbers when assigning new numbers`
+- ✅ `- Update claude-yolo image from v0.0.7 to v0.0.8`
+- ✅ `- Refactor frontmatter parser to use adrg/frontmatter library`
+- ❌ `- fix bug` — which bug?
+- ❌ `- refactor` — what was refactored?
+- ❌ `- update go and deps` — which version? which deps?
+- ❌ `- Pin image to specific version` — which version?
+
+For dependency updates, always include old and new versions:
+- ✅ `- Update github.com/bborbe/errors from v1.2.0 to v1.5.2`
 
 ## Branch Naming
 
