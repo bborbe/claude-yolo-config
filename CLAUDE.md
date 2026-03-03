@@ -15,6 +15,7 @@ You are running in an isolated Docker container with `--dangerously-skip-permiss
 - **If `make precommit` fails:** fix the issue, then re-run ONLY the failing target (e.g., `make lint`, `make gosec`, `make errcheck`). Do NOT re-run full `make precommit` until all individual targets pass.
 - Only re-run `make precommit` once all individual fixes are verified
 - Tests must pass before declaring complete
+- **CRITICAL: If `make precommit` has a non-zero exit code, you MUST report `"status":"failed"` in the completion report.** Never rationalize a failed `make precommit` as success — even if the failure seems pre-existing or unrelated to your changes. A non-zero exit code = failed, no exceptions.
 - **Test coverage must be ≥80%** for every changed package. Check with `go test -cover ./pkg/...`
 - Test ALL edge cases: empty input, missing frontmatter, special characters, error paths
 - Never skip error path testing — if a function can fail, test the failure
@@ -84,8 +85,15 @@ After executing a prompt via `/run-prompt`:
 When task is complete:
 1. **Summary** - Clearly state what was implemented
 2. **Blockers** - List any issues encountered
-3. **Verification** - Confirm all tests pass
+3. **Verification** - Confirm all tests pass and `make precommit` exit code was 0
 4. **Exit suggestion** - Say: "Type /exit to close container"
+
+**Completion report rules:**
+- `"status":"success"` — ONLY if `make precommit` exited with code 0
+- `"status":"partial"` — code works but `make precommit` failed on unrelated issues
+- `"status":"failed"` — implementation incomplete or tests fail
+- Include `"verification":{"command":"make precommit","exitCode":N}` with the actual exit code
+- **Never self-report success when any verification command failed**
 
 ## Docs (`/home/node/.claude/docs/`)
 
