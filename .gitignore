@@ -1,6 +1,7 @@
-# Claude Code runtime state — never version
+.DS_Store
 .claude.json
 .credentials.json
+/telemetry
 backups/
 cache/
 debug/
@@ -16,6 +17,4 @@ settings.json
 shell-snapshots/
 todoStorage.json
 todos/
-
-# OS
-.DS_Store
+/.update.lock
