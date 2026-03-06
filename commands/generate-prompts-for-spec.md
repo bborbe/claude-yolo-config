@@ -34,6 +34,17 @@ where `NNN` is the zero-padded spec number (e.g. `"020"`).
 After the frontmatter, write the prompt body using XML tags:
 
 ```xml
+<summary>
+TL;DR — 5-10 bullet points describing what this prompt does in plain language.
+Written for the human reviewer, not the agent. No technical jargon, no file paths.
+Example:
+- Adds a new `verifying` status to the spec lifecycle
+- When all linked prompts complete, spec moves to `verifying` instead of `completed`
+- Adds `spec list` display marker so verifying specs stand out
+- Adds `Verifying` count to `spec status` output
+- Tests all new transitions
+</summary>
+
 <objective>
 WHAT to build and WHY (1-3 sentences). State the end state, not the steps.
 </objective>
