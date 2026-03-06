@@ -82,7 +82,7 @@ After executing a prompt via `/run-prompt`:
 
 ## Changelog
 
-If the project has a `CHANGELOG.md`, add a `## Unreleased` section **before finishing**. Read `/home/node/.claude/docs/changelog-guide.md` for full style rules.
+If the project has a `CHANGELOG.md`, write `## Unreleased` **immediately after implementing** (before running `make precommit`). Read `/home/node/.claude/docs/changelog-guide.md` for full style rules.
 
 **Quick rules:**
 - Format: `- <prefix>: <what> [context]` — prefix is **required**
@@ -91,6 +91,12 @@ If the project has a `CHANGELOG.md`, add a `## Unreleased` section **before fini
 - Be specific: name types, commands, packages — never write `- fix: fix bug` or `- chore: update deps`
 - If `## Unreleased` already exists, append to it (don't replace)
 - Dark-factory reads the prefix to determine the version bump automatically
+
+**Common mistakes — do NOT do these:**
+- ❌ Copy bash comments from the `<verification>` section (`# Confirm X`, `# Create a test...`) — those are test instructions, not changelog entries
+- ❌ Use the prompt filename as the entry (`- 110-fix-spec-watcher-clean-shutdown`)
+- ❌ Describe what you verified — describe what you **implemented**
+- ✅ `- fix: Suppress noisy stack trace when SpecWatcher generation is cancelled by context on shutdown`
 
 ## Completion Protocol
 
