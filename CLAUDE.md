@@ -82,17 +82,12 @@ After executing a prompt via `/run-prompt`:
 
 ## Changelog
 
-If the project has a `CHANGELOG.md`, add a meaningful `## Unreleased` section **before finishing**:
+If the project has a `CHANGELOG.md`, add a meaningful `## Unreleased` section **before finishing**. Read `/home/node/.claude/docs/changelog-guide.md` for full style rules.
 
-```markdown
-## Unreleased
-
-- **[Short feature title]**: Human-readable description of what was implemented and why it matters. Be specific — mention key types, commands, or behaviors added. One bullet per logical change. No filenames, no internal jargon.
-```
-
-**Rules:**
-- Write from the user's perspective ("Users can now...", "Adds support for...", "Fixes ...")
-- One bullet per logical change (not per file changed)
+**Quick rules:**
+- Format: `- <Verb> <what> [context]` — e.g. `- Add SpecWatcher to monitor specs/ for approved status`
+- One bullet per logical change (not per file)
+- Be specific: name types, commands, packages — never write `- refactor` or `- add tests`
 - If `## Unreleased` already exists, append to it (don't replace)
 - Dark-factory automatically renames `## Unreleased` → version number on release
 
@@ -132,6 +127,7 @@ Project-specific conventions AI wouldn't know. Read ALL relevant docs before imp
 | Doc | What you learn |
 |-----|---------------|
 | `git-workflow.md` | Never commit in dark-factory, branch naming, changelog format |
+| `changelog-guide.md` | Entry format, verb style, anti-patterns, `## Unreleased` rules |
 
 **Python project** (has pyproject.toml): Use pytest, follow Python conventions.
 
