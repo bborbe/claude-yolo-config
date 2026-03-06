@@ -4,15 +4,12 @@ tags:
   - git
   - documentation
 ---
-Tags: [[Git Development Guide]] [[Git Commit Guide]]
 
----
-
-Guide for writing consistent, useful CHANGELOG.md entries across Go projects.
+Guide for writing consistent, useful CHANGELOG.md entries in dark-factory projects.
 
 ## Goal
 
-Produce changelog entries that are specific, scannable, and usable for automated version bumping via `/commit`.
+Produce changelog entries with conventional prefixes so dark-factory can determine the version bump automatically — no guessing from prose.
 
 ## File Structure
 
@@ -29,13 +26,13 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
-- Add X feature to Y type
-- Fix Z returning wrong value on nil input
+- feat: Add SpecWatcher to monitor specs/ for approved status changes
+- fix: Remove stale Docker container before starting a new executor run
 
 ## v1.5.0
 
-- Add FuncRunner interface for executing functions with custom behavior
-- Fix WaiterUntil to handle equal times correctly
+- feat: Add FuncRunner interface for executing functions with custom behavior
+- fix: Fix WaiterUntil to handle equal times correctly
 ```
 
 **Rules:**
@@ -45,73 +42,65 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 - Newest version first
 - Flat list — no `### Added` / `### Fixed` categories
 
-## Branch Workflow
+## Conventional Prefixes (REQUIRED)
 
-| Branch | Section | Tag |
-|--------|---------|-----|
-| Feature branch | `## Unreleased` | Never |
-| master | `## vX.Y.Z` (converted from Unreleased) | Yes |
+Every `## Unreleased` entry must start with a conventional prefix:
 
-The `/commit` skill handles this automatically.
+| Prefix | Meaning | Version bump |
+|--------|---------|-------------|
+| `feat:` | New feature or capability | **Minor** (`vX.Y+1.0`) |
+| `fix:` | Bug fix | Patch |
+| `refactor:` | Code restructure, no behavior change | Patch |
+| `test:` | Test additions or improvements | Patch |
+| `docs:` | Documentation only | Patch |
+| `chore:` | Dependency updates, build, tooling | Patch |
+| `perf:` | Performance improvement | Patch |
+
+dark-factory reads these prefixes to determine the version bump automatically. Any `feat:` entry → minor bump; everything else → patch bump.
 
 ## Entry Style
 
-**Format:** `- <Verb> <what> [context]`
-
-**Verbs:** `Add` · `Fix` · `Update` · `Remove` · `Refactor` · `Improve`
+**Format:** `- <prefix>: <what> [context]`
 
 **Be specific:**
-- Name the exact type, function, or package touched
+- Name the exact type, function, command, or package touched
 - Include versions for dependency updates
 - Add brief context for non-obvious changes
 
 ## Anti-Patterns
 
-❌ `- update go and deps` — which Go version? which deps?
-✅ `- Update Go from 1.25.5 to 1.26.0`
-✅ `- Update github.com/bborbe/errors to v1.5.2`
+❌ `- Add SpecWatcher` — missing prefix, bump detection fails
+✅ `- feat: Add SpecWatcher to monitor specs/ for approved status changes`
 
-❌ `- go mod update` — no information
-✅ `- Update dependencies (sentry-go v0.36.2→v0.40.0, osv-scanner v2.2.4→v2.3.0)`
+❌ `- feat: update go and deps` — wrong prefix (chore), and too vague
+✅ `- chore: Update Go from 1.25.5 to 1.26.0`
+✅ `- chore: Update github.com/bborbe/errors to v1.5.2`
 
-❌ `- refactor` — what was refactored?
-✅ `- Refactor BackgroundRunner to use FuncRunner interface composition`
+❌ `- fix: refactor` — what was refactored?
+✅ `- refactor: Extract worktree cleanup to reduce cognitive complexity`
 
-❌ `- add tests` — for what?
-✅ `- Add comprehensive test suite for FuncRunner (8 new tests)`
+❌ `- test: add tests` — for what?
+✅ `- test: Add processor test suite covering retry and failure paths (12 tests)`
 
-❌ `- fix bug` — which bug?
-✅ `- Fix WaiterUntil to handle equal times correctly (no longer waits when until == now)`
-
-## Version Increment Rules
-
-| Change type | Increment |
-|-------------|-----------|
-| Breaking API changes | Major (`vX.0.0`) — set manually |
-| New features, API additions (backward compat) | Minor (`vX.Y.0`) |
-| Bug fixes, dep updates, refactoring, docs | Patch (`vX.Y.Z`) |
+❌ `- fix: fix bug` — which bug?
+✅ `- fix: Fix NormalizeFilenames number conflict on non-standard filename format`
 
 ## Merge Conflicts in Unreleased
 
-Multiple feature branches writing to `## Unreleased` will conflict. Resolution is always: keep both bullet lists, remove markers.
+Multiple feature branches writing to `## Unreleased` will conflict. Resolution: keep both bullet lists, remove conflict markers.
 
 ```markdown
 ## Unreleased
-- Feature A change
-- Feature B change
+- feat: Add SpecWatcher
+- fix: Remove stale container before run
 ```
 
 ## Validation
 
+- [ ] Every `## Unreleased` entry has a conventional prefix (`feat:`, `fix:`, etc.)
+- [ ] `feat:` used only for genuine new features/capabilities
+- [ ] Descriptions are specific — name types, functions, commands
+- [ ] Dependency updates use `chore:` and include version numbers
+- [ ] No vague entries (`fix: fix bug`, `chore: update deps`)
 - [ ] Preamble present with SemVer link
-- [ ] Feature branch uses `## Unreleased`, not a version number
-- [ ] Each entry starts with a capital verb
-- [ ] Dependency updates include version numbers
-- [ ] No vague entries (`refactor`, `add tests`, `go mod update`)
 - [ ] Newest version at top
-
-## References
-
-- [[Git Development Guide]] — branch and release workflow
-- [[Git Commit Guide]] — commit message style
-- `/commit` skill — automates Unreleased → version conversion

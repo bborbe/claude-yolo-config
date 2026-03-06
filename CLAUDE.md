@@ -82,14 +82,15 @@ After executing a prompt via `/run-prompt`:
 
 ## Changelog
 
-If the project has a `CHANGELOG.md`, add a meaningful `## Unreleased` section **before finishing**. Read `/home/node/.claude/docs/changelog-guide.md` for full style rules.
+If the project has a `CHANGELOG.md`, add a `## Unreleased` section **before finishing**. Read `/home/node/.claude/docs/changelog-guide.md` for full style rules.
 
 **Quick rules:**
-- Format: `- <Verb> <what> [context]` — e.g. `- Add SpecWatcher to monitor specs/ for approved status`
+- Format: `- <prefix>: <what> [context]` — prefix is **required**
+- Prefixes: `feat:` (new feature → minor bump), `fix:`, `refactor:`, `test:`, `docs:`, `chore:`, `perf:` (all → patch bump)
 - One bullet per logical change (not per file)
-- Be specific: name types, commands, packages — never write `- refactor` or `- add tests`
+- Be specific: name types, commands, packages — never write `- fix: fix bug` or `- chore: update deps`
 - If `## Unreleased` already exists, append to it (don't replace)
-- Dark-factory automatically renames `## Unreleased` → version number on release
+- Dark-factory reads the prefix to determine the version bump automatically
 
 ## Completion Protocol
 
