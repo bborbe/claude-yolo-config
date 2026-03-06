@@ -18,3 +18,4 @@ shell-snapshots/
 todoStorage.json
 todos/
 /.update.lock
+/plans
