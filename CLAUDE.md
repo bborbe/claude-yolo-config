@@ -80,6 +80,22 @@ After executing a prompt via `/run-prompt`:
 - Completed prompts are archived to `prompts/completed/`
 - Management session will commit them (not YOLO)
 
+## Changelog
+
+If the project has a `CHANGELOG.md`, add a meaningful `## Unreleased` section **before finishing**:
+
+```markdown
+## Unreleased
+
+- **[Short feature title]**: Human-readable description of what was implemented and why it matters. Be specific — mention key types, commands, or behaviors added. One bullet per logical change. No filenames, no internal jargon.
+```
+
+**Rules:**
+- Write from the user's perspective ("Users can now...", "Adds support for...", "Fixes ...")
+- One bullet per logical change (not per file changed)
+- If `## Unreleased` already exists, append to it (don't replace)
+- Dark-factory automatically renames `## Unreleased` → version number on release
+
 ## Completion Protocol
 
 When task is complete:
