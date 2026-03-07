@@ -2,45 +2,60 @@
 
 String-based enums with validation. Used 50+ times across projects.
 
+## Naming Convention
+
+Constants follow `<Value><Type>` pattern. The type name is always suffixed:
+
+- Type: `OrderStatus` (not `Status` — avoids collisions when package has multiple enum types)
+- Constants: `PendingOrderStatus`, `ActiveOrderStatus` (not `StatusPending`, not `PendingStatus`)
+- Collection: `AvailableOrderStatuses`, `OrderStatuses`
+
 ## Complete Pattern
 
 ```go
-// 1. Constants with explicit type
+// 1. Constants with explicit type — <Value><Type> naming
 const (
-    PendingStatus  Status = "pending"
-    ActiveStatus   Status = "active"
-    ClosedStatus   Status = "closed"
+    PendingOrderStatus    OrderStatus = "pending"
+    ProcessingOrderStatus OrderStatus = "processing"
+    CompletedOrderStatus  OrderStatus = "completed"
+    FailedOrderStatus     OrderStatus = "failed"
 )
 
 // 2. Available* collection (ALL valid values)
-var AvailableStatuses = Statuses{PendingStatus, ActiveStatus, ClosedStatus}
+var AvailableOrderStatuses = OrderStatuses{
+    PendingOrderStatus,
+    ProcessingOrderStatus,
+    CompletedOrderStatus,
+    FailedOrderStatus,
+}
 
 // 3. Singular type
-type Status string
+type OrderStatus string
 
-func (s Status) String() string { return string(s) }
+func (o OrderStatus) String() string { return string(o) }
 
-func (s Status) Validate(ctx context.Context) error {
-    if !AvailableStatuses.Contains(s) {
-        return errors.Wrapf(ctx, validation.Error, "unknown status '%s'", s)
+func (o OrderStatus) Validate(ctx context.Context) error {
+    if !AvailableOrderStatuses.Contains(o) {
+        return errors.Wrapf(ctx, validation.Error, "unknown order status '%s'", o)
     }
     return nil
 }
 
-func (s Status) Ptr() *Status { return &s }
+func (o OrderStatus) Ptr() *OrderStatus { return &o }
 
 // 4. Plural collection type
-type Statuses []Status
+type OrderStatuses []OrderStatus
 
-func (s Statuses) Contains(status Status) bool {
-    return collection.Contains(s, status)  // github.com/bborbe/collection
+func (o OrderStatuses) Contains(status OrderStatus) bool {
+    return collection.Contains(o, status)  // github.com/bborbe/collection
 }
 ```
 
 ## Checklist
 
-- Constants with explicit type annotation
-- `var Available*` collection with ALL valid values
+- Type name is specific (e.g. `OrderStatus`, not `Status`)
+- Constants follow `<Value><Type>` naming (e.g. `PendingOrderStatus`)
+- `var Available<Type>s` collection with ALL valid values
 - `String()` method
 - `Validate(ctx)` checking against `Available*`
 - `Ptr()` method returning pointer
