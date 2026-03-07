@@ -109,21 +109,9 @@ Feature branches always use `## Unreleased` — never add version numbers:
 
 Version numbers are assigned by the maintainer when merging to master.
 
-**Entry style:** `- <Verb> <what> [context]`
+**Entry style:** `- <prefix>: <What> [context]`
 
-Approved verbs (capital, imperative): `Add` · `Fix` · `Update` · `Remove` · `Refactor` · `Improve`
-
-Be specific — name the exact type, function, or package:
-- ✅ `- Fix NormalizeFilenames to include completed/ numbers when assigning new numbers`
-- ✅ `- Update claude-yolo image from v0.0.7 to v0.0.8`
-- ✅ `- Refactor frontmatter parser to use adrg/frontmatter library`
-- ❌ `- fix bug` — which bug?
-- ❌ `- refactor` — what was refactored?
-- ❌ `- update go and deps` — which version? which deps?
-- ❌ `- Pin image to specific version` — which version?
-
-For dependency updates, always include old and new versions:
-- ✅ `- Update github.com/bborbe/errors from v1.2.0 to v1.5.2`
+See `changelog-guide.md` for full format rules, prefixes (`feat:`, `fix:`, `chore:`, etc.), and examples. dark-factory reads prefixes to determine version bumps automatically.
 
 ## Branch Naming
 

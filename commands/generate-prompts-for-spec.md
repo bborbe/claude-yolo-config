@@ -33,14 +33,21 @@ After the frontmatter, write the prompt body using XML tags:
 
 ```xml
 <summary>
-TL;DR — 5-10 bullet points describing what this prompt does in plain language.
-Written for the human reviewer, not the agent. No technical jargon, no file paths.
-Example:
-- Adds a new `verifying` status to the spec lifecycle
-- When all linked prompts complete, spec moves to `verifying` instead of `completed`
-- Adds `spec list` display marker so verifying specs stand out
-- Adds `Verifying` count to `spec status` output
-- Tests all new transitions
+TL;DR — 5-10 bullet points describing WHAT this prompt achieves, not HOW.
+Written for the human reviewer, not the agent. No file paths, no struct names, no function signatures.
+Each bullet should describe an observable outcome or behavior change.
+
+BAD (too technical — describes implementation):
+- Adds `validationCommand` field to `Config` in `pkg/config/config.go`
+- Adds `ValidationSuffix(cmd string) string` to `pkg/report/suffix.go`
+- Threads `validationCommand` through `CreateProcessor` in `pkg/factory/factory.go`
+
+GOOD (describes what changes for the user/system):
+- Projects can configure a validation command that applies to all prompts
+- The configured command is injected into every prompt before execution
+- The agent uses the command's exit code as the authoritative success/failure signal
+- Empty config disables injection — prompts fall back to their own verification
+- Existing prompts continue to work unchanged
 </summary>
 
 <objective>
