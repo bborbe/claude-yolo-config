@@ -10,8 +10,6 @@ Extract the spec number from the filename (e.g. `020` from `020-auto-prompt-gene
 
 Read 3-5 recent completed prompts from `/workspace/prompts/completed/` (pick the highest-numbered ones) to understand the prompt style, XML tag structure, and level of detail expected.
 
-Use Glob to find all files in `/workspace/prompts/*.md` and `/workspace/prompts/completed/*.md`. Determine the highest existing prompt number so new prompts do not conflict.
-
 Read the spec carefully. Identify:
 - Desired Behaviors (numbered list) — these drive decomposition
 - Constraints — must be repeated in every prompt
@@ -19,7 +17,7 @@ Read the spec carefully. Identify:
 
 Decompose the spec into 2–6 prompt files. Group coupled behaviors that cannot be verified independently into the same prompt. Sequence them so each prompt's postconditions are the next prompt's preconditions.
 
-For each prompt, write a file to `/workspace/prompts/<slug>.md` where `<slug>` uses alphabetical ordering prefixes so dark-factory processes them in the correct sequence (e.g. `spec-020-1-foo.md`, `spec-020-2-bar.md`).
+For each prompt, write a file to `/workspace/prompts/<slug>.md`. Do NOT add number prefixes — dark-factory assigns numbers on approve. If prompts must be executed in a specific order, prefix with `1-`, `2-`, `3-` for alphabetical sorting (e.g. `1-spec-020-model.md`, `2-spec-020-routing.md`).
 
 Each file must start with this exact frontmatter:
 ```
@@ -75,5 +73,5 @@ Rules:
 - Always include exact file paths and function signatures
 - Always copy constraints from the spec into each prompt
 - Do NOT add frontmatter fields beyond spec/status/created — dark-factory adds the rest
-- Do NOT place prompts in `/workspace/prompts/queue/` — inbox only
+- Do NOT place prompts in `/workspace/prompts/in-progress/` — inbox only
 - The `spec` field must be a YAML array: `spec: ["020"]` not `spec: "020"`
