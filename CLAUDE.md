@@ -100,13 +100,9 @@ If the project has a `CHANGELOG.md`, write `## Unreleased` **immediately after i
 
 ## Completion Protocol
 
-When task is complete:
-1. **Summary** - Clearly state what was implemented
-2. **Blockers** - List any issues encountered
-3. **Verification** - Confirm all tests pass and `make precommit` exit code was 0
-4. **Exit suggestion** - Say: "Type /exit to close container"
+The prompt includes a completion report template (appended by dark-factory). Write the report, then **STOP** — no summary, no explanation, no further output.
 
-**Completion report rules:**
+**Report rules:**
 - `"status":"success"` — ONLY if `make precommit` exited with code 0
 - `"status":"partial"` — code works but `make precommit` failed on unrelated issues
 - `"status":"failed"` — implementation incomplete or tests fail
