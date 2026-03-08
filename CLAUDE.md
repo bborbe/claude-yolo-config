@@ -124,6 +124,7 @@ Project-specific conventions AI wouldn't know. Read ALL relevant docs before imp
 | `go-validation.md` | `validation.All/Any/Name` from `github.com/bborbe/validation` |
 | `go-composition.md` | Compose small services via DI, never call package functions directly |
 | `go-time-injection.md` | `libtime.CurrentDateTimeGetter` injection, `DateTime` over `time.Time`, `SetNow()` in tests |
+| `go-logging-guide.md` | `log/slog` for new projects, `glog` for existing, level mapping, structured logging |
 | `go-security-linting.md` | gosec rules: file perms `0600`/`0750`, `#nosec` with reasons, fix on first attempt |
 | `go-precommit.md` | Linter limits (funlen 80, nestif 4, golines 100), banned packages, errcheck, license headers |
 

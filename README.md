@@ -47,6 +47,7 @@ The Docker container provides the safety boundary: no kubectl, no SSH keys, no p
 | `docs/go-time-injection.md` | `libtime.CurrentDateTimeGetter`, `DateTime` over `time.Time`, `SetNow()` |
 | `docs/go-enum-pattern.md` | String enums, `Available*`, `Validate()` |
 | `docs/go-validation.md` | `validation.All/Any/Name` patterns |
+| `docs/go-logging-guide.md` | `log/slog` for new projects, `glog` for existing, level mapping |
 | `docs/go-security-linting.md` | gosec rules, file perms, `#nosec` |
 | `docs/go-precommit.md` | Linter limits, banned packages, license headers |
 | `docs/git-workflow.md` | Branch naming, changelog format, PR rules |
