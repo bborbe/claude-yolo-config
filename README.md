@@ -44,6 +44,7 @@ The Docker container provides the safety boundary: no kubectl, no SSH keys, no p
 | `docs/go-testing.md` | Ginkgo/Gomega, counterfeiter mocks, coverage rules |
 | `docs/go-factory-pattern.md` | Zero-logic factories, `Create*` prefix |
 | `docs/go-composition.md` | DI composition, never call package functions directly |
+| `docs/go-time-injection.md` | `libtime.CurrentDateTimeGetter`, `DateTime` over `time.Time`, `SetNow()` |
 | `docs/go-enum-pattern.md` | String enums, `Available*`, `Validate()` |
 | `docs/go-validation.md` | `validation.All/Any/Name` patterns |
 | `docs/go-security-linting.md` | gosec rules, file perms, `#nosec` |
