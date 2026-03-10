@@ -43,3 +43,23 @@ func (o Order) Validate(ctx context.Context) error {
     }.Validate(ctx)
 }
 ```
+
+## Anti-Patterns
+
+```go
+// BAD: manual if-chains instead of validation.All
+if o.OrderID == "" { return err }
+if o.Status == "" { return err }
+
+// BAD: validation.Error not used for sentinel
+return errors.New("invalid") // use errors.Wrapf(ctx, validation.Error, "msg")
+```
+
+## Checklist
+
+- [ ] Domain types implement `Validate(ctx) error`
+- [ ] Uses `validation.All{}` / `validation.Any{}` for composition
+- [ ] Fields wrapped with `validation.Name("field", v)`
+- [ ] Custom logic uses `validation.HasValidationFunc`
+- [ ] Errors use `validation.Error` sentinel
+```

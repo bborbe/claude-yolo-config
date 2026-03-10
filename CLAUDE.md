@@ -64,6 +64,13 @@ Before running `make precommit`, review your own diff (`git diff`) against these
 - [ ] Counterfeiter annotations on all interfaces
 - [ ] Errors wrapped with `errors.Wrap(ctx, err, "message")`
 
+**Context cancellation** (from `go-context-cancellation.md`):
+- [ ] Loops with significant runtime have non-blocking `select` context check
+
+**HTTP handlers** (from `go-http-handler.md`):
+- [ ] No inline handlers in main.go — all in `pkg/handler/`
+- [ ] Factory methods follow `Create*Handler` naming
+
 **Testing** (from `go-testing.md`):
 - [ ] Coverage ≥80% for changed packages
 - [ ] Error paths tested
@@ -127,6 +134,16 @@ Project-specific conventions AI wouldn't know. Read ALL relevant docs before imp
 | `go-logging-guide.md` | `log/slog` for new projects, `glog` for existing, level mapping, structured logging |
 | `go-security-linting.md` | gosec rules: file perms `0600`/`0750`, `#nosec` with reasons, fix on first attempt |
 | `go-precommit.md` | Linter limits (funlen 80, nestif 4, golines 100), banned packages, errcheck, license headers |
+| `go-context-cancellation.md` | Non-blocking select in loops, when to apply, error wrapping |
+| `go-http-handler.md` | Handler in `pkg/handler/`, factory in `pkg/factory/`, no inline handlers |
+| `go-functional-options.md` | Variadic options pattern, `WithX` funcs, naming conventions |
+| `go-filter-pattern.md` | Functional filters, no-op for empty, preprocess outside closure |
+| `go-parse-pattern.md` | `ParseX`/`ParseXDefault` from `any`, pointer returns, validation |
+| `go-prometheus-metrics.md` | Interface-based metrics, registration in init(), naming, labels |
+| `go-service-patterns.md` | Provider vs Registry, interface design, package organization |
+| `go-test-types.md` | Unit vs Integration vs E2E, dependency patterns, decision tree |
+| `go-doc.md` | GoDoc comments: start with name, full sentences, behavior not impl |
+| `go-json-error-handler.md` | JSON error responses, error codes, `WrapWithDetails`, factory integration |
 
 **All projects:**
 | Doc | What you learn |

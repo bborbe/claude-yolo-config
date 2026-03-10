@@ -57,6 +57,16 @@ One-line description.
 | `go-composition.md` | Compose small services via DI, never call package functions directly |
 | `go-security-linting.md` | gosec rules: file perms, `#nosec` annotations, fix on first attempt |
 | `go-precommit.md` | Linter limits (funlen 80, nestif 4, golines 100), banned packages, errcheck, license |
+| `go-context-cancellation.md` | Non-blocking select in loops, when to apply, error wrapping |
+| `go-http-handler.md` | Handlers in `pkg/handler/`, factories in `pkg/factory/`, no inline |
+| `go-functional-options.md` | Variadic options pattern, `WithX` funcs, naming conventions |
+| `go-filter-pattern.md` | Functional filters, no-op for empty, preprocess outside closure |
+| `go-parse-pattern.md` | `ParseX`/`ParseXDefault` from `any`, pointer returns, validation |
+| `go-prometheus-metrics.md` | Interface-based metrics, init() registration, naming, labels |
+| `go-service-patterns.md` | Provider vs Registry, interface design, package org |
+| `go-test-types.md` | Unit vs Integration vs E2E, dependency patterns, decision tree |
+| `go-doc.md` | GoDoc comment conventions, start with name, full sentences |
+| `go-json-error-handler.md` | JSON error responses, error codes, `WrapWithDetails` |
 
 ## When to Add a New Doc
 

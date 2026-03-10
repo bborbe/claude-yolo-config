@@ -50,6 +50,16 @@ The Docker container provides the safety boundary: no kubectl, no SSH keys, no p
 | `docs/go-logging-guide.md` | `log/slog` for new projects, `glog` for existing, level mapping |
 | `docs/go-security-linting.md` | gosec rules, file perms, `#nosec` |
 | `docs/go-precommit.md` | Linter limits, banned packages, license headers |
+| `docs/go-context-cancellation.md` | Non-blocking select in loops, error wrapping |
+| `docs/go-http-handler.md` | Handler in `pkg/handler/`, factory in `pkg/factory/` |
+| `docs/go-functional-options.md` | Variadic options, `WithX` funcs, naming |
+| `docs/go-filter-pattern.md` | Functional filters, no-op, preprocess outside closure |
+| `docs/go-parse-pattern.md` | `ParseX`/`ParseXDefault`, pointer returns |
+| `docs/go-prometheus-metrics.md` | Interface metrics, init() registration, naming |
+| `docs/go-service-patterns.md` | Provider vs Registry, interface design |
+| `docs/go-test-types.md` | Unit vs Integration vs E2E decision tree |
+| `docs/go-doc.md` | GoDoc comment conventions |
+| `docs/go-json-error-handler.md` | JSON error responses, `WrapWithDetails` |
 | `docs/git-workflow.md` | Branch naming, changelog format, PR rules |
 | `docs/changelog-guide.md` | Entry format, prefixes, anti-patterns |
 
