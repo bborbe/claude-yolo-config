@@ -1,6 +1,21 @@
 .DS_Store
 .claude.json
 .credentials.json
+/.claude.json
+/.credentials.json
+/.netrc
+/.update.lock
+/backups
+/cache
+/debug
+/history.jsonl
+/mcp-needs-auth-cache.json
+/plans
+/plugins
+/projects
+/settings.json
+/shell-snapshots
+/telemetry
 /telemetry
 backups/
 cache/
@@ -17,5 +32,3 @@ settings.json
 shell-snapshots/
 todoStorage.json
 todos/
-/.update.lock
-/plans
