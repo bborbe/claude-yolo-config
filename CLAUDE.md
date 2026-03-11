@@ -16,7 +16,10 @@ You are running in an isolated Docker container with `--dangerously-skip-permiss
 - Only re-run `make precommit` once all individual fixes are verified
 - Tests must pass before declaring complete
 - **CRITICAL: If `make precommit` has a non-zero exit code, you MUST report `"status":"failed"` in the completion report.** Never rationalize a failed `make precommit` as success — even if the failure seems pre-existing or unrelated to your changes. A non-zero exit code = failed, no exceptions.
-- **Test coverage must be ≥80%** for every changed package. Check with `go test -cover ./pkg/...`
+- **Test coverage** — see `docs/definition-of-done.md` for full rules:
+  - New code: ≥80% statement coverage
+  - Modified code: test all changed/added code paths (existing untested code needs no retroactive coverage)
+  - Check with `go test -coverprofile=/tmp/cover.out -mod=vendor ./affected/pkg/... && go tool cover -func=/tmp/cover.out`
 - Test ALL edge cases: empty input, missing frontmatter, special characters, error paths
 - Never skip error path testing — if a function can fail, test the failure
 
@@ -150,6 +153,7 @@ Project-specific conventions AI wouldn't know. Read ALL relevant docs before imp
 |-----|---------------|
 | `git-workflow.md` | Never commit in dark-factory, branch naming, changelog format |
 | `changelog-guide.md` | Entry format, verb style, anti-patterns, `## Unreleased` rules |
+| `definition-of-done.md` | Test coverage rules (new vs modified code), verification, completion criteria |
 
 **Python project** (has pyproject.toml): Use pytest, follow Python conventions.
 
