@@ -12,6 +12,7 @@ You are running in an isolated Docker container with `--dangerously-skip-permiss
 **Verification:**
 - Use `make test` iteratively after each change (fast feedback loop, NOT `go build ./...`)
 - Run `make precommit` ONCE at the very end as final validation (it's slow: runs trivy + full linter suite)
+- **Multi-service repos:** ONLY run `make test`/`make precommit` in the service directory that was changed — NEVER at repo root. If only YAML/config changed (no Go code), skip `make precommit` entirely and use the prompt's `<verification>` commands instead.
 - **If `make precommit` fails:** fix the issue, then re-run ONLY the failing target (e.g., `make lint`, `make gosec`, `make errcheck`). Do NOT re-run full `make precommit` until all individual targets pass.
 - Only re-run `make precommit` once all individual fixes are verified
 - Tests must pass before declaring complete
@@ -22,6 +23,11 @@ You are running in an isolated Docker container with `--dangerously-skip-permiss
   - Check with `go test -coverprofile=/tmp/cover.out -mod=vendor ./affected/pkg/... && go tool cover -func=/tmp/cover.out`
 - Test ALL edge cases: empty input, missing frontmatter, special characters, error paths
 - Never skip error path testing — if a function can fail, test the failure
+
+**Bash:**
+- **NEVER use `tail -f`** — it blocks forever and prevents the container from exiting. Use `cat` or `sleep N && cat` to read files.
+- **NEVER use `watch`** — same problem, blocks indefinitely.
+- If you need to poll a background task, use `sleep 30 && cat <file>`, not `tail -f <file>`.
 
 **Code Quality:**
 - Check project CLAUDE.md for specific patterns

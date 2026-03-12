@@ -35,6 +35,8 @@ pytest --cov=affected_module --cov-report=term-missing
 
 - `make test` after each meaningful change (fast feedback)
 - `make precommit` once at the end (full validation)
+- **Multi-service repos:** only run in the changed service directory, never at repo root
+- **YAML/config-only changes:** skip `make precommit`, use the prompt's `<verification>` commands
 - Non-zero exit code from `make precommit` = failed, no exceptions
 
 ## Changelog
