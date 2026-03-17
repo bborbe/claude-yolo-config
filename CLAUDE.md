@@ -71,7 +71,7 @@ Before running `make precommit`, review your own diff (`git diff`) against these
 **Patterns** (from `go-patterns.md`):
 - [ ] Public interface + private struct + `New*` constructor
 - [ ] Counterfeiter annotations on all interfaces
-- [ ] Errors wrapped with `errors.Wrap(ctx, err, "message")`
+- [ ] Errors wrapped with `errors.Wrapf(ctx, err, "message")` — never `context.Background()`, never `fmt.Errorf`
 
 **Context cancellation** (from `go-context-cancellation.md`):
 - [ ] Loops with significant runtime have non-blocking `select` context check
@@ -153,6 +153,7 @@ Project-specific conventions AI wouldn't know. Read ALL relevant docs before imp
 | `go-test-types.md` | Unit vs Integration vs E2E, dependency patterns, decision tree |
 | `go-doc.md` | GoDoc comments: start with name, full sentences, behavior not impl |
 | `go-json-error-handler.md` | JSON error responses, error codes, `WrapWithDetails`, factory integration |
+| `go-error-wrapping.md` | `bborbe/errors` API, never `fmt.Errorf`, never `context.Background()` in pkg/, sentinel errors with `stderrors` alias |
 
 **All projects:**
 | Doc | What you learn |

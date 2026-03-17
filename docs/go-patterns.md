@@ -31,12 +31,13 @@ func (s *myService) Do(ctx context.Context, input Input) error {
 
 ## Key Rules
 
-**Error handling** — always wrap with context:
+**Error handling** — always wrap with context (see `go-error-wrapping.md` for full rules):
 ```go
-return errors.Wrap(ctx, err, "operation failed")  // github.com/bborbe/errors
+return errors.Wrapf(ctx, err, "operation failed")  // github.com/bborbe/errors
+// Never fmt.Errorf. Never context.Background() — add ctx param instead.
 ```
 
-**Context** — always pass through, never create `context.Background()` in business logic:
+**Context** — always pass through, never create `context.Background()` in business logic. If a function lacks ctx, add it as a parameter:
 ```go
 func (s *myService) Process(ctx context.Context, ...) error { ... }
 ```

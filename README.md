@@ -60,6 +60,7 @@ The Docker container provides the safety boundary: no kubectl, no SSH keys, no p
 | `docs/go-test-types.md` | Unit vs Integration vs E2E decision tree |
 | `docs/go-doc.md` | GoDoc comment conventions |
 | `docs/go-json-error-handler.md` | JSON error responses, `WrapWithDetails` |
+| `docs/go-error-wrapping.md` | `bborbe/errors` wrapping, never `fmt.Errorf`, never `context.Background()`, sentinel errors |
 | `docs/git-workflow.md` | Branch naming, changelog format, PR rules |
 | `docs/changelog-guide.md` | Entry format, prefixes, anti-patterns |
 

@@ -67,6 +67,7 @@ One-line description.
 | `go-test-types.md` | Unit vs Integration vs E2E, dependency patterns, decision tree |
 | `go-doc.md` | GoDoc comment conventions, start with name, full sentences |
 | `go-json-error-handler.md` | JSON error responses, error codes, `WrapWithDetails` |
+| `go-error-wrapping.md` | `bborbe/errors` wrapping, never `fmt.Errorf`, never `context.Background()` in business logic, add ctx parameter instead |
 
 ## When to Add a New Doc
 

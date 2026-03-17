@@ -26,6 +26,7 @@ Read these docs before reviewing:
 - `/home/node/.claude/docs/go-factory-pattern.md`
 - `/home/node/.claude/docs/go-composition.md`
 - `/home/node/.claude/docs/go-testing.md`
+- `/home/node/.claude/docs/go-error-wrapping.md`
 - `/home/node/.claude/docs/git-workflow.md` (CHANGELOG section)
 
 ### Step 3: Run make precommit
