@@ -29,6 +29,36 @@ func TestSuite(t *testing.T) {
 
 Always check if a `*_suite_test.go` already exists before creating one.
 
+### Binary Projects: main_test.go
+
+Every binary project (package `main`) needs a `main_test.go` with a `gexec.Build` compilation test:
+
+```go
+package main_test
+
+import (
+    "testing"
+    . "github.com/onsi/ginkgo/v2"
+    . "github.com/onsi/gomega"
+    "github.com/onsi/gomega/gexec"
+)
+
+var _ = Describe("Main", func() {
+    It("Compiles", func() {
+        var err error
+        _, err = gexec.Build(".", "-mod=mod")
+        Expect(err).NotTo(HaveOccurred())
+    })
+})
+
+func TestSuite(t *testing.T) {
+    RegisterFailHandler(Fail)
+    RunSpecs(t, "Main Suite")
+}
+```
+
+**Key differences from package suite_test.go:** no `time.Local`, no `format.TruncatedDiff`, no `//go:generate`, external test package (`main_test`).
+
 ---
 
 ## Test Structure: Arrange → Act → Assert

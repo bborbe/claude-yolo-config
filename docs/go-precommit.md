@@ -79,3 +79,4 @@ Every `.go` file needs BSD header. Auto-added by `make precommit` but write it y
 - [ ] All errors checked
 - [ ] License header on new files
 - [ ] `#nosec` annotations have reasons (see `go-security-linting.md`)
+- [ ] Use `slices.Contains` instead of manual loops — `slicescontains` linter enforces this

@@ -51,6 +51,8 @@ func (s *myService) Process(ctx context.Context, ...) error { ... }
 //go:generate go run -mod=mod github.com/maxbrunsfeld/counterfeiter/v6 -generate
 ```
 
+**NEVER** use `//go:generate counterfeiter ...` — it calls a globally installed binary which may be built with the wrong Go version. Always use the two-part pattern above: `//counterfeiter:generate` on the interface + `//go:generate go run -mod=mod ...` in suite_test.go.
+
 **Pointer utilities** — use `github.com/bborbe/collection`:
 ```go
 val := libcollection.Ptr("hello")  // not func strPtr(s string) *string
