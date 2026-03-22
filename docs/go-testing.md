@@ -21,7 +21,9 @@ func TestSuite(t *testing.T) {
     time.Local = time.UTC
     format.TruncatedDiff = false
     RegisterFailHandler(Fail)
-    RunSpecs(t, "Test Suite")
+    suiteConfig, reporterConfig := GinkgoConfiguration()
+    suiteConfig.Timeout = 60 * time.Second
+    RunSpecs(t, "Test Suite", suiteConfig, reporterConfig)
 }
 ```
 
@@ -38,6 +40,7 @@ package main_test
 
 import (
     "testing"
+    "time"
     . "github.com/onsi/ginkgo/v2"
     . "github.com/onsi/gomega"
     "github.com/onsi/gomega/gexec"
@@ -53,7 +56,9 @@ var _ = Describe("Main", func() {
 
 func TestSuite(t *testing.T) {
     RegisterFailHandler(Fail)
-    RunSpecs(t, "Main Suite")
+    suiteConfig, reporterConfig := GinkgoConfiguration()
+    suiteConfig.Timeout = 60 * time.Second
+    RunSpecs(t, "Main Suite", suiteConfig, reporterConfig)
 }
 ```
 
@@ -304,6 +309,44 @@ Define a shared test error in the suite file — reuse across all test files in 
 ```go
 // pkg/ops/ops_suite_test.go
 var ErrTest = errors.New("test error")
+```
+
+---
+
+## Test Timeouts
+
+### Suite-Level Timeout (Recommended Default)
+
+Every suite file should set `suiteConfig.Timeout` to prevent stuck tests:
+
+```go
+suiteConfig, reporterConfig := GinkgoConfiguration()
+suiteConfig.Timeout = 60 * time.Second
+RunSpecs(t, "Test Suite", suiteConfig, reporterConfig)
+```
+
+### Per-Spec Timeout
+
+```go
+It("completes within 2s", func(ctx context.Context) {
+    // test code — ctx cancels on timeout
+}, SpecTimeout(2*time.Second))
+```
+
+### Per-Node Timeout
+
+```go
+Describe("slow subsystem", NodeTimeout(30*time.Second), func() {
+    It("finishes fast", func(ctx SpecContext) {
+        Eventually(ctx, func() bool { return ready }).Should(BeTrue())
+    }, NodeTimeout(5*time.Second))
+})
+```
+
+### CLI Override
+
+```bash
+ginkgo --timeout=120s ./...
 ```
 
 ---
