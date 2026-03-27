@@ -107,6 +107,26 @@ var _ = Describe("MyService", func() {
 - `BeforeEach` = arrange, `JustBeforeEach` = act, `It` = assert
 - Fresh state in every `BeforeEach` — no shared mutable state
 - Test both success and error paths
+- **Never use stdlib `testing` table-driven tests** (`[]struct` + `t.Run` loops). Always use Ginkgo `DescribeTable`/`Entry`:
+
+```go
+// ❌ WRONG — stdlib table-driven test
+func TestFoo(t *testing.T) {
+    tests := []struct{ input, want string }{ ... }
+    for _, tt := range tests {
+        t.Run(tt.name, func(t *testing.T) { ... })
+    }
+}
+
+// ✅ CORRECT — Ginkgo DescribeTable
+var _ = DescribeTable("foo",
+    func(input, expected string) {
+        Expect(foo(input)).To(Equal(expected))
+    },
+    Entry("case A", "in1", "out1"),
+    Entry("case B", "in2", "out2"),
+)
+```
 
 ---
 
