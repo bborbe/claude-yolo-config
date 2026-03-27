@@ -76,6 +76,11 @@ Before running `make precommit`, review your own diff (`git diff`) against these
 **Context cancellation** (from `go-context-cancellation.md`):
 - [ ] Loops with significant runtime have non-blocking `select` context check
 
+**Concurrency** (from `go-concurrency-patterns.md`):
+- [ ] No raw `go func()` — use `run.CancelOnFirstErrorWait`
+- [ ] Channel passed as `chan<- T` param (caller owns it, not returned from method)
+- [ ] Bounded producers use `defer close(ch)`; unbounded producers do NOT close
+
 **HTTP handlers** (from `go-http-handler.md`):
 - [ ] No inline handlers in main.go — all in `pkg/handler/`
 - [ ] Factory methods follow `Create*Handler` naming
@@ -140,7 +145,8 @@ Project-specific conventions AI wouldn't know. Read ALL relevant docs before imp
 | `go-validation.md` | `validation.All/Any/Name` from `github.com/bborbe/validation` |
 | `go-composition.md` | Compose small services via DI, never call package functions directly |
 | `go-time-injection.md` | `libtime.CurrentDateTimeGetter` injection, `DateTime` over `time.Time`, `SetNow()` in tests |
-| `go-logging-guide.md` | `log/slog` for new projects, `glog` for existing, level mapping, structured logging |
+| `go-logging-guide.md` | `log/slog` for new projects, `glog` for existing; V(2)=heartbeat, V(3)=per-item, V(4)=trace; `github.com/bborbe/log` sampling; `/setloglevel` endpoint |
+| `go-concurrency-patterns.md` | `run.CancelOnFirstErrorWait` over `go func()`, caller-owned channels, `collection.ChannelFnMap/List`, bounded vs unbounded producers |
 | `go-security-linting.md` | gosec rules: file perms `0600`/`0750`, `#nosec` with reasons, fix on first attempt |
 | `go-precommit.md` | Linter limits (funlen 80, nestif 4, golines 100), banned packages, errcheck, license headers |
 | `go-context-cancellation.md` | Non-blocking select in loops, when to apply, error wrapping |
