@@ -34,3 +34,4 @@ todoStorage.json
 todos/
 /.gitconfig
 /plans
+/sessions
