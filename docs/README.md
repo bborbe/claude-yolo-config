@@ -70,6 +70,7 @@ One-line description.
 | `go-error-wrapping.md` | `bborbe/errors` wrapping, never `fmt.Errorf`, never `context.Background()` in business logic, add ctx parameter instead |
 | `go-logging-guide.md` | slog vs glog choice, V(2)-V(4) levels, log sampling with `github.com/bborbe/log`, runtime `/setloglevel` endpoint |
 | `go-concurrency-patterns.md` | `run.CancelOnFirstErrorWait`, caller-owned channels, `collection.ChannelFnMap/List`, `go func()` smell |
+| `go-cqrs.md` | Command-Result pattern, `RunCommandConsumerTx` auto-wraps, result topic, `ResultProvider.ResultFor()` |
 
 ## When to Add a New Doc
 
