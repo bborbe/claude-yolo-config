@@ -31,7 +31,7 @@ You are running in an isolated Docker container with `--dangerously-skip-permiss
 
 **Code Quality:**
 - Check project CLAUDE.md for specific patterns
-- Read ALL relevant docs in `/home/node/.claude/docs/` (see Docs section below)
+- Read ALL relevant docs in `/home/node/.claude/plugins/marketplaces/coding/docs/` (see Docs section below)
 - Follow established patterns in the codebase
 
 ## Git Workflow
@@ -41,13 +41,13 @@ You are running in an isolated Docker container with `--dangerously-skip-permiss
 - Create feature branch from master, commit, push, create PR to master
 
 **All other projects:**
-- Read `/home/node/.claude/docs/git-workflow.md`
+- Read `/home/node/.claude/plugins/marketplaces/coding/docs/git-workflow.md`
 - NEVER commit directly to master
 
 ## Workflow
 
 1. **Understand the prompt** - Read the task specification carefully
-2. **Check conventions** - Read project CLAUDE.md AND all relevant `/home/node/.claude/docs/go-*.md` docs
+2. **Check conventions** - Read project CLAUDE.md AND all relevant `/home/node/.claude/plugins/marketplaces/coding/docs/go-*.md` docs
 3. **Implement** - Follow all success criteria from the prompt
 4. **Verify iteratively** - Run `make test` after each meaningful change (fast, repeat as needed)
 5. **Self-review** - Check your diff (`git diff`) against the self-review checklist below
@@ -73,7 +73,7 @@ Before running `make precommit`, review your own diff (`git diff`) against these
 - [ ] Counterfeiter annotations on all interfaces
 - [ ] Errors wrapped with `errors.Wrapf(ctx, err, "message")` — never `context.Background()`, never `fmt.Errorf`
 
-**Context cancellation** (from `go-context-cancellation.md`):
+**Context cancellation** (from `go-context-cancellation-in-loops.md`):
 - [ ] Loops with significant runtime have non-blocking `select` context check
 
 **Concurrency** (from `go-concurrency-patterns.md`):
@@ -81,11 +81,11 @@ Before running `make precommit`, review your own diff (`git diff`) against these
 - [ ] Channel passed as `chan<- T` param (caller owns it, not returned from method)
 - [ ] Bounded producers use `defer close(ch)`; unbounded producers do NOT close
 
-**HTTP handlers** (from `go-http-handler.md`):
+**HTTP handlers** (from `go-http-handler-refactoring-guide.md`):
 - [ ] No inline handlers in main.go — all in `pkg/handler/`
 - [ ] Factory methods follow `Create*Handler` naming
 
-**Testing** (from `go-testing.md`):
+**Testing** (from `go-testing-guide.md`):
 - [ ] Coverage ≥80% for changed packages
 - [ ] Error paths tested
 - [ ] Counterfeiter mocks (never manual mocks)
@@ -103,7 +103,7 @@ After executing a prompt via `/run-prompt`:
 
 ## Changelog
 
-If the project has a `CHANGELOG.md`, write `## Unreleased` **immediately after implementing** (before running `make precommit`). Read `/home/node/.claude/docs/changelog-guide.md` for full style rules.
+If the project has a `CHANGELOG.md`, write `## Unreleased` **immediately after implementing** (before running `make precommit`). Read `/home/node/.claude/plugins/marketplaces/coding/docs/changelog-guide.md` for full style rules.
 
 **Quick rules:**
 - Format: `- <prefix>: <what> [context]` — prefix is **required**
@@ -130,36 +130,39 @@ The prompt includes a completion report template (appended by dark-factory). Wri
 - Include `"verification":{"command":"make precommit","exitCode":N}` with the actual exit code
 - **Never self-report success when any verification command failed**
 
-## Docs (`/home/node/.claude/docs/`)
+## Docs (coding plugin)
 
-Project-specific conventions AI wouldn't know. Read ALL relevant docs before implementing.
+Coding guidelines live in the **coding marketplace plugin**: `/home/node/.claude/plugins/marketplaces/coding/docs/`
+
+Read ALL relevant docs before implementing.
 
 **Go project** (has go.mod) — read all `go-*.md`:
 | Doc | What you learn |
 |-----|---------------|
 | `go-patterns.md` | Interface→Constructor→Struct, error wrapping, counterfeiter, pointer utils |
-| `go-testing.md` | Ginkgo/Gomega suite files, counterfeiter mocks, coverage ≥80% |
+| `go-testing-guide.md` | Ginkgo/Gomega suite files, counterfeiter mocks, coverage ≥80% |
 | `go-factory-pattern.md` | `Create*` prefix, zero logic, constructor pattern, Factory vs Runner |
-| `go-enum-pattern.md` | String enums: `Available*`, `Validate()`, plural type, `Contains()` |
-| `go-functional-composition.md` | `XxxFunc` + `XxxList` for composable interfaces |
-| `go-validation.md` | `validation.All/Any/Name` from `github.com/bborbe/validation` |
+| `go-enum-type-pattern.md` | String enums: `Available*`, `Validate()`, plural type, `Contains()` |
+| `go-functional-composition-pattern.md` | `XxxFunc` + `XxxList` for composable interfaces |
+| `go-validation-framework-guide.md` | `validation.All/Any/Name` from `github.com/bborbe/validation` |
 | `go-composition.md` | Compose small services via DI, never call package functions directly |
 | `go-time-injection.md` | `libtime.CurrentDateTimeGetter` injection, `DateTime` over `time.Time`, `SetNow()` in tests |
 | `go-logging-guide.md` | `log/slog` for new projects, `glog` for existing; V(2)=heartbeat, V(3)=per-item, V(4)=trace; `github.com/bborbe/log` sampling; `/setloglevel` endpoint |
 | `go-concurrency-patterns.md` | `run.CancelOnFirstErrorWait` over `go func()`, caller-owned channels, `collection.ChannelFnMap/List`, bounded vs unbounded producers |
 | `go-security-linting.md` | gosec rules: file perms `0600`/`0750`, `#nosec` with reasons, fix on first attempt |
 | `go-precommit.md` | Linter limits (funlen 80, nestif 4, golines 100), banned packages, errcheck, license headers |
-| `go-context-cancellation.md` | Non-blocking select in loops, when to apply, error wrapping |
-| `go-http-handler.md` | Handler in `pkg/handler/`, factory in `pkg/factory/`, no inline handlers |
-| `go-functional-options.md` | Variadic options pattern, `WithX` funcs, naming conventions |
+| `go-context-cancellation-in-loops.md` | Non-blocking select in loops, when to apply, error wrapping |
+| `go-http-handler-refactoring-guide.md` | Handler in `pkg/handler/`, factory in `pkg/factory/`, no inline handlers |
+| `go-functional-options-pattern.md` | Variadic options pattern, `WithX` funcs, naming conventions |
 | `go-filter-pattern.md` | Functional filters, no-op for empty, preprocess outside closure |
 | `go-parse-pattern.md` | `ParseX`/`ParseXDefault` from `any`, pointer returns, validation |
-| `go-prometheus-metrics.md` | Interface-based metrics, registration in init(), naming, labels |
-| `go-service-patterns.md` | Provider vs Registry, interface design, package organization |
-| `go-test-types.md` | Unit vs Integration vs E2E, dependency patterns, decision tree |
-| `go-doc.md` | GoDoc comments: start with name, full sentences, behavior not impl |
-| `go-json-error-handler.md` | JSON error responses, error codes, `WrapWithDetails`, factory integration |
-| `go-error-wrapping.md` | `bborbe/errors` API, never `fmt.Errorf`, never `context.Background()` in pkg/, sentinel errors with `stderrors` alias |
+| `go-prometheus-metrics-guide.md` | Interface-based metrics, registration in init(), naming, labels |
+| `go-service-implementation-patterns.md` | Provider vs Registry, interface design, package organization |
+| `go-test-types-guide.md` | Unit vs Integration vs E2E, dependency patterns, decision tree |
+| `go-doc-best-practices.md` | GoDoc comments: start with name, full sentences, behavior not impl |
+| `go-json-error-handler-guide.md` | JSON error responses, error codes, `WrapWithDetails`, factory integration |
+| `go-error-wrapping-guide.md` | `bborbe/errors` API, never `fmt.Errorf`, never `context.Background()` in pkg/, sentinel errors with `stderrors` alias |
+| `go-cqrs.md` | Command-Result pattern, `RunCommandConsumerTx` auto-wraps, result topic, `ErrCommandObjectSkipped` |
 
 **All projects:**
 | Doc | What you learn |
@@ -168,21 +171,25 @@ Project-specific conventions AI wouldn't know. Read ALL relevant docs before imp
 | `changelog-guide.md` | Entry format, verb style, anti-patterns, `## Unreleased` rules |
 | `definition-of-done.md` | Test coverage rules (new vs modified code), verification, completion criteria |
 
-**Python project** (has pyproject.toml): Use pytest, follow Python conventions.
+**Python project** (has pyproject.toml): Use pytest, read `python-*.md` docs.
 
 **Shell project** (*.sh files): Use shellcheck.
 
-See `docs/README.md` for guide on maintaining these docs.
+## Commands & Agents (from marketplace plugins)
 
-## Commands & Agents
-
-**Commands** (`/home/node/.claude/commands/`):
+**coding plugin** (`/coding:*`):
 | Command | Purpose |
 |---------|---------|
-| `/code-review` | Review changes (short=1 agent, full=4 agents) |
-| `/code-review full` | Thorough review with all agents |
+| `/coding:code-review` | Review changes (short=1 agent, full=4 agents) |
+| `/coding:pr-review` | Review PR changes |
 
-**Agents** (`/home/node/.claude/agents/`):
+**dark-factory plugin** (`/dark-factory:*`):
+| Command | Purpose |
+|---------|---------|
+| `/dark-factory:generate-prompts-for-spec` | Generate prompts from approved spec |
+| `/dark-factory:run-prompt` | Execute a prompt in YOLO container |
+
+**Agents** (from coding plugin):
 | Agent | Purpose |
 |-------|---------|
 | `simple-bash-runner` | Execute shell commands, return pass/fail |
@@ -190,7 +197,7 @@ See `docs/README.md` for guide on maintaining these docs.
 | `go-factory-pattern-assistant` | Zero-logic factories, Create* prefix |
 | `go-test-coverage-assistant` | Test gaps, mock infrastructure |
 
-Use `/code-review short` when prompt asks for review. The self-review checklist above runs on every prompt by default (no agents needed).
+Use `/coding:code-review short` when prompt asks for review. The self-review checklist above runs on every prompt by default (no agents needed).
 
 ## Container Environment
 
