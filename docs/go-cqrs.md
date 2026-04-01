@@ -47,45 +47,39 @@ cdb.RunCommandConsumerTx(saramaClientProvider, syncProducer, db,
 
 ## Waiting for Result
 
-### In-Process (same service)
-
 ```go
+// In-process: channel-based
 provider := cdb.NewResultChannelProviderForRequestID()
-// Wire as ResultBroadcaster in result consumer
-// Wire as ResultProvider where commands are sent
-
 ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
 defer cancel()
 result, err := provider.ResultFor(ctx, command)
 // result.Success, result.Message, result.RequestID
-```
 
-### Cross-Process (separate service)
-
-Consume result topic, match on `RequestID`:
-```go
+// Cross-process: consume result topic, match on RequestID
 topic := schemaID.ResultTopic(branch)
-// Filter messages where result.RequestID == command.RequestID
 ```
 
-## Result Struct
+## Skipping Invalid Commands
+
+Return `cdb.ErrCommandObjectSkipped` when a command should be committed but not processed. Framework advances offset, sends no result. **Why:** `nil` silently swallows; normal error retries forever.
 
 ```go
-type Result struct {
-    Success   bool
-    RequestID RequestID
-    Message   string
-    Initiator iam.Initiator
-    Operation CommandOperation
-    ID        string
-}
+// BAD — silently swallows, no visibility
+return nil, nil, nil
+// BAD — framework sends failure result + retries
+return nil, nil, err
+// GOOD — skips with reason, no retry, no result
+return nil, nil, errors.Wrapf(ctx, cdb.ErrCommandObjectSkipped, "reason: %v", err)
 ```
+
+**Use for:** malformed data, validation failure, duplicates, wrong state, filtered out.
+**NOT for:** transient errors (network, disk) — return normal error so framework retries.
 
 ## Rules
 
 - Never consume event topic to wait for command results — use result topic
 - `RunCommandConsumerTx` wraps executors automatically — don't wrap manually
-- `ErrCommandObjectSkipped` skips silently (no result sent)
+- `ErrCommandObjectSkipped` skips silently (no result sent) — use for non-retryable situations
 - `SendResultEnabled() == false` + no error → no result sent
 - Context timeout → `ResultFor()` returns `Success: false`
 
@@ -95,3 +89,4 @@ type Result struct {
 - [ ] Controller uses `RunCommandConsumerTx` (auto-wraps)
 - [ ] Consumer reads result topic, not event topic
 - [ ] Timeout via context, not manual timer
+- [ ] Non-retryable situations return `ErrCommandObjectSkipped`, not `nil`
