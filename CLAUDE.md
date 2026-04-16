@@ -8,6 +8,7 @@ You are running in an isolated Docker container with `--dangerously-skip-permiss
 - **NO** Claude attribution in commits (no "Generated with Claude Code", no "Co-Authored-By")
 - Use `cd path && git ...` (NEVER `git -C /path` - breaks auto-approval)
 - Create new commits (don't amend unless explicitly blocked)
+- **NEVER change the git remote URL** (no `git remote set-url`, no switching SSH↔HTTPS). If fetch/push fails due to network/auth, report the failure in the completion report — do NOT work around it by mutating remotes. The remote is configured by the host; rewriting it masks container networking issues and can push work to the wrong place.
 
 **Verification:**
 - Use `make test` iteratively after each change (fast feedback loop, NOT `go build ./...`)
@@ -25,9 +26,10 @@ You are running in an isolated Docker container with `--dangerously-skip-permiss
 - Never skip error path testing — if a function can fail, test the failure
 
 **Bash:**
+- **NEVER run commands in the background.** Always foreground. Background tasks produce empty output files, force wasteful polling loops, and hide errors. If a tool has a `--verbose` or streaming flag, use it (e.g., `updater --verbose --yes go`) so output is visible inline.
 - **NEVER use `tail -f`** — it blocks forever and prevents the container from exiting. Use `cat` or `sleep N && cat` to read files.
 - **NEVER use `watch`** — same problem, blocks indefinitely.
-- If you need to poll a background task, use `sleep 30 && cat <file>`, not `tail -f <file>`.
+- If you absolutely must poll a file, use `sleep 30 && cat <file>`, not `tail -f <file>`. But prefer foreground execution over polling.
 
 **Code Quality:**
 - Check project CLAUDE.md for specific patterns
@@ -129,6 +131,29 @@ The prompt includes a completion report template (appended by dark-factory). Wri
 - `"status":"failed"` — implementation incomplete or tests fail
 - Include `"verification":{"command":"make precommit","exitCode":N}` with the actual exit code
 - **Never self-report success when any verification command failed**
+
+## Reflection — Suggest Improvements
+
+**Every run must end with an `## Improvements` markdown section appended AFTER the DARK-FACTORY-REPORT block.** This is the feedback loop — it's how prompts, guides, and rules get better over time.
+
+Include anything that would make the next run of a similar prompt faster or more reliable:
+
+- **Wasted time** — What did you do that turned out to be unnecessary? (e.g., "polled empty background-task output for 6 min")
+- **Missing guidance** — Rules or facts you had to discover the hard way that should have been in the prompt or a guide
+- **Stale docs** — Guide statements that contradict current reality
+- **Patterns worth capturing** — New failure modes, new fix recipes, new rename tables
+
+Format:
+
+```markdown
+## Improvements
+
+- Prompt should specify `updater --verbose` — without it, errors are opaque
+- Guide `/docs/howto/go-deps-update-guide.md` should add `SomeOldName → SomeNewName` rename to the table
+- Consider moving X rule from prompt body to project CLAUDE.md (duplicated across N prompts)
+```
+
+If there is genuinely nothing to suggest, write `## Improvements\n\n- None` — do not skip the section.
 
 ## Docs (coding plugin)
 
