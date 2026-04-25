@@ -31,6 +31,11 @@ You are running in an isolated Docker container with `--dangerously-skip-permiss
 - **NEVER use `watch`** — same problem, blocks indefinitely.
 - If you absolutely must poll a file, use `sleep 30 && cat <file>`, not `tail -f <file>`. But prefer foreground execution over polling.
 
+**File size:**
+- **Reading**: files > ~2,000 lines exceed the Read tool's 25k-token limit and require `offset`/`limit` chunked reads. Use `grep -n` to locate the section first, then read 200-500 lines around the match. Never re-attempt the full read — it will fail again.
+- **Writing**: a Go file > 1,500 lines is borderline; > 2,000 lines is a smell; > 3,000 lines is a structural problem. Split into focused files in the same package — `<pkg>_queue_test.go`, `<pkg>_recovery.go`, `<pkg>_test_helpers.go`, etc. Generated mocks/protobuf are exempt.
+- If a prompt asks you to grow a file past 2,000 lines, flag in `## Improvements`: "file X is N lines and should be split before further additions".
+
 **Code Quality:**
 - Check project CLAUDE.md for specific patterns
 - Read ALL relevant docs in `/home/node/.claude/plugins/marketplaces/coding/docs/` (see Docs section below)
