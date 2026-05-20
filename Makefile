@@ -9,6 +9,10 @@ linux:
 .PHONY: update
 update:
 	@for d in plugins/marketplaces/*/; do \
+		if [ ! -e "$$d.git" ]; then \
+			echo "=== $$d (skipping — no .git, not a git clone) ==="; \
+			continue; \
+		fi; \
 		echo "=== $$d ==="; \
 		dirty=$$(git -C "$$d" status --porcelain); \
 		if [ -n "$$dirty" ]; then \
