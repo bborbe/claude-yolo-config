@@ -39,6 +39,40 @@ cd ~/.claude-yolo/plugins/marketplaces/coding && git pull
 cd ~/.claude-yolo/plugins/marketplaces/dark-factory && git pull
 ```
 
+## Authentication
+
+The YOLO Claude session needs its **own** OAuth token, **separate from your host `~/.claude` login**. The token lives in `~/.claude-yolo/.credentials.json` (or `.claude.json` on older versions) and is what `dark-factory` (and every other tool that mounts this dir) presents to Anthropic.
+
+Tokens expire periodically — when they do, every prompt fails with `Claude OAuth token missing or expired in /Users/<you>/.claude-yolo` and the daemon refuses to start any container.
+
+**Refresh the token** — recommended path, inside an interactive YOLO container so the environment matches what dark-factory uses:
+
+```bash
+cd ~/Documents/workspaces/claude-yolo
+./scripts/yolo-run.sh
+# inside the Claude session, type:
+/login
+# follow the device-code flow in your browser; on success the container reports
+# "Login successful". Exit the session — ~/.claude-yolo/.credentials.json is updated.
+```
+
+Host-only alternative (no container):
+
+```bash
+CLAUDE_CONFIG_DIR=~/.claude-yolo claude
+# inside the session, run /login as above
+```
+
+Both paths write the same file. Commit nothing back to this repo — `.credentials.json` is gitignored (and must stay that way; it is a secret).
+
+**Verify auth is good** (host-side spot check):
+
+```bash
+ls -l ~/.claude-yolo/.credentials.json   # exists and mtime is recent
+```
+
+If `dark-factory` keeps failing with the OAuth error after a fresh `/login`, the token may have been refreshed in `~/.claude` instead of `~/.claude-yolo` — re-run the login with `CLAUDE_CONFIG_DIR=~/.claude-yolo` explicitly set.
+
 ## Plugins
 
 All docs, agents, and commands are served from marketplace plugins:
